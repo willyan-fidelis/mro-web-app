@@ -1,0 +1,52 @@
+https://www.youtube.com/watch?v=kqBCHYf_adA&t=398s
+
+Depois de testado toda aplicação localmente, vamos para o aws
+
+-Agora instale o aws-cli
+
+-Execute: aws configure
+
+-Coloque suas credencias e finalize a configuração.
+(Lembrete: vá em minhas credencias de segurança e crie uma chave, depois guarde o arquivo com as chaves, pode ser utel)
+
+-Agora devemos instalar docker machine
+
+-Agora vamos criar nossa maquina:
+docker-machine create --driver amazonec2 aws01
+
+-Aguarde e suas instancia ja estara criada!
+
+-Agora rode 'docker-machine env aws01' para configurar variaveis de ambiente na instancia
+
+-Agora:
+eval $(docker-machine env aws01)
+
+-Apartir desse momento os cmd estão sendo rodados diretamente na aws, na nova maquina!
+
+-Podemos dar um 'docker-compose up -d' para rodar o dokcer na cloud
+
+-Agora no console da aws vamos em 'security groups' selecionamos o 'docker-machine' e vamos no inbound e adicionamos uma porta para acesso externo para enywhere
+
+-Acesso externo liberado!!! basta ver o ip nas instancias e pronto!
+
+-Parei no 15:00 do video, onde o papo é sobre um dominio!
+
+
+-------------------
+Extenções/apps uteis:
+
+Extenção SFTP: Util para navegar nas pastas/arquivos remotos.
+arquivo com chave privada requerido(id_rsa ou .pem). Arquivo gerado ao criar uma 'key pairs' no aws ou criado automaticamente pelo docker-machine e disponivel na pasta '/home/willyan/.docker/machine' 
+
+PuTTY App: Cliente SSH.
+Mais info: https://www.youtube.com/watch?v=L-cIxSi1L2g
+Para gerar o arquivo .ppk necessario(com o par de chaves pubplica-privada), é preciso arquivo com chave privada (id_rsa ou .pem) e atravez do PuTTYGen gerar o arquivo .ppk
+
+Extenção SSH: Falta fazer funcionar com AWS EC2!!
+https://letswp.io/remote-development-visual-studio-code-amazon-ec2/
+configurar arquivo config:
+Host asw1
+    HostName 54.147.101.54
+    User ubuntu
+    IdentityFile /home/willyan/projetos/AWS/ec2-nodejs/id_rsa
+-------------------
