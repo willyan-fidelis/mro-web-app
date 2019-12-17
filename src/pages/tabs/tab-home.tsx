@@ -1,36 +1,16 @@
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonButtons,
-  IonButton
-} from '@ionic/react';
-import { book, build, colorFill, grid, search } from 'ionicons/icons';
+
 import React from 'react';
-import './Tab1.css';
+import './tab-home.css';
 
-import { Api } from '../application/api'
-import { Puppers } from '../components/videos-overview/Puppers'
+import { VideosByLocalAndTime } from '../videos-overview/videos-bylocal-and-time'
 
+//14053231724 20080654791
 
+export const Tab1 = (props: any) => {
 
-const Tab1: React.FC = () => {
-
-  return (
-    <Puppers></Puppers>
-  );
+  // @ts-ignore
+  //console.log('Propos Tab1:', props.match.params)
+  return <VideosByLocalAndTime url_parms={props.match.params}></VideosByLocalAndTime>;
   /*   return (
       <IonPage>
         <IonHeader>

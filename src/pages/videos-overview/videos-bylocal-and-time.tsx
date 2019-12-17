@@ -3,15 +3,11 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import '@ionic/core/css/core.css';
 import '@ionic/core/css/ionic.bundle.css';
 import {
-  IonButton,
-  IonButtons,
   IonContent,
   IonCard,
   IonCardContent,
   IonHeader,
   IonIcon,
-  IonToolbar,
-  IonTitle,
   IonPage,
   IonGrid,
   IonList,
@@ -22,52 +18,73 @@ import {
 
 } from '@ionic/react';
 import { AppContext } from '../../App';
-import { search, pin } from 'ionicons/icons';
-import { useSwipeable, Swipeable } from 'react-swipeable'
-import './Tab1.css';
+import { pin } from 'ionicons/icons';
+import { Swipeable } from 'react-swipeable'
+import './videos-bylocal-and-time.css';
 import { api } from '../../application/resource.instance'
-var dateFormat = require('dateformat');
+export interface PropsVideosByLocalAndTime {
+  url_parms: {
+    country: string;
+    state: string;
+    city: string;
+    customer: string;
+    local: string;
+    weekday: string;
+    start: string;
+    end: string;
+  }
+}
 
-
-export const Puppers: React.FC = () => {
-
+export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
+  //console.log('Propos Videos ByLocal:', props)
   // @ts-ignore
   const { state, dispatch } = useContext(AppContext);
+  //console.log('all state: ', state)
 
   let [videos, setVideos] = useState([]);
 
-  const fetchPuppers = useCallback(async () => {
+  const fetchVideos = useCallback(async () => {
+    console.log('fetchVideos!')
     //const ret = await fetch('https://dog.ceo/api/breeds/image/random/10');
     // @ts-ignore
-    const [vd] = await api.highest_rated_videos(0, 5)
-    console.log(vd)
-    // @ts-ignore
-    setVideos(vd.body)
-    //const json = await ret.json();
-    // dispatch({
-    //   type: 'setPuppers',
-    //   puppers: json.message
-    // })
-  }, [dispatch]);
+    //const [vd, err] = await api.highest_rated_videos(0, 5)
+    const [vd, err] = await api.latest_bylocalandweekday_videos(0, 5, props.url_parms.country, props.url_parms.state, props.url_parms.city, props.url_parms.customer, props.url_parms.local, props.url_parms.weekday, props.url_parms.start, props.url_parms.end)
+    //console.log(vd)
+    if (err) { alert("Ops! Algo não ocorreu bem. Tente novamente!") }
+    else { setVideos(vd.body) }
+  }, []);
 
   useEffect(() => {
-    fetchPuppers();
+    fetchVideos();
+    // dispatch({
+    //   type: 'setSession',
+    //   session: { hey: inputValue }
+    // })
   }, []);
 
   return (
     <Swipeable onSwipedRight={() => alert("Direita")} onSwipedLeft={() => alert("Esquerda")}>
       <IonPage>
-        <IonHeader>
+        <IonHeader onClick={() => { fetchVideos() }}>
           <ButtonAppBar>
           </ButtonAppBar>
         </IonHeader>
         <IonContent>
+          {
+            //@ts-ignore
+            //(<ToastExample abc={() => { TesteXXX() }}></ToastExample>)
+          }
           <IonList>
             <IonGrid fixed>
               <IonRow align-items-stretch>
                 {videos.map((video: any, index: number, array: Array<any>) => (
-                  <IonCol align-self-stretch size="12" size-md="6" key={video}>
-                    <IonCard className="my-card" key={index}>
+                  <IonCol align-self-stretch size="12" size-md="6" key={index}>
+                    <IonCard onClick={() => {
+                      dispatch({
+                        type: 'setVideoPlayerProps',
+                        video_player_props: video
+                      })
+                    }} routerLink={`/video-details/${video.OID}`} className="my-card" key={index}>
                       <img /* height='300' */ src={video.thumbnail_img_fullname} />
                       <IonItem>
 
@@ -77,8 +94,8 @@ export const Puppers: React.FC = () => {
 
                       <IonCardContent>
                         {video.customer_name} - {video.local_name}  <br />
-                        Data: {dateFormat(new Date(video.when), "dd/mm/yyyy")} <br />
-                        Hora: {dateFormat(new Date(video.when), "HH:MM")} <br />
+                        Data: {video.when_date} <br />
+                        Hora: {video.when_time} <br />
                       </IonCardContent>
                     </IonCard>
                   </IonCol>

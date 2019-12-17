@@ -10,12 +10,13 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { apps, flash, send, home, trophy, contact, star, logoBuffer, search } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
-import Tab4 from './pages/Tab4';
-import Details from './pages/Details';
+import { home, trophy, contact, star, logoBuffer } from 'ionicons/icons';
+import videos from './pages/tabs/tab-home';
+import Tab2 from './pages/tabs/Tab2';
+import Tab3 from './pages/tabs/Tab3';
+import Tab4 from './pages/tabs/Tab4';
+import Details from './pages/tabs/Details';
+import VideoDetails from './pages/video-player/Details';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -36,31 +37,40 @@ import { instance_initialize } from './application/resource.instance'
 /* Theme variables */
 import './theme/variables.css';
 import { useLocalStorage } from './components/localstorage/useLocalStorage';
+require('dotenv').config()
 
 export const AppContext = createContext(null);
 
-const initialState = {
-  puppers: []
+const initialState: { db: any, session: SessionModel | {} } = {
+  db: { hello: 'word' },
+  session: { video_player_props: null },
+}
+
+export interface SessionModel {
+  video_player_props: any
 }
 
 const reducer = (state: any, action: any) => {
-  if (action.type === 'setPuppers') {
-    return { ...state, puppers: action.puppers }
+  if (action.type === 'setVideoPlayerProps') {
+    return { ...state, session: { ...state.session, video_player_props: action.video_player_props } }
   }
   return state;
 }
 
 const AppContextProvider = (props: any) => {
-  //Inicia todas as instancias da aplicação:
-  instance_initialize();
 
-  const [data, setData] = useLocalStorage('dataxxx', initialState);
+
+  const [data, setData] = useLocalStorage('datax3', initialState);
 
   let [state, dispatch] = useReducer(reducer, data);
 
   let value = { state, dispatch };
 
   useEffect(() => {
+    console.log('state: ', state)
+
+    //let st = { db: state.db, session: {} }
+    //setData(st);
     setData(state);
   }, [state, setData]);
 
@@ -71,46 +81,54 @@ const AppContextProvider = (props: any) => {
   );
 }
 
-const App: React.FC = () => (
-  <AppContextProvider>
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route path="/tab1" component={Tab1} exact={true} />
-            <Route path="/tab2" component={Tab2} exact={true} />
-            <Route path="/tab2/details" component={Details} />
-            <Route path="/tab2/details/:item" component={Details} />
-            <Route path="/tab3" component={Tab3} />
-            <Route path="/tab4" component={Tab4} />
-            <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="tab1" href="/tab1">
-              <IonIcon icon={home} />
-              <IonLabel>Inicio</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab2" href="/tab2">
-              <IonIcon icon={trophy} />
-              <IonLabel>Em Alta</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab3" href="/tab3">
-              <IonIcon icon={star} />
-              <IonLabel>Inscrições</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab4" href="/tab4">
-              <IonIcon icon={contact} />
-              <IonLabel>Conta</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab4" href="/tab4">
-              <IonIcon icon={logoBuffer} />
-              <IonLabel>Histórico</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
-  </AppContextProvider>
-);
+
+const App = () => {
+  //Inicia todas as instancias da aplicação:
+  instance_initialize();
+  return (
+
+    <AppContextProvider>
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route path="/tab1" component={videos} exact={true} />
+              <Route path="/tab2" component={Tab2} exact={true} />
+              <Route path="/tab2/details" component={Details} />
+              <Route path="/tab2/details/:item" component={Details} />
+              <Route path="/tab3" component={Tab3} />
+              <Route path="/tab4" component={Tab4} />
+              <Route path="/tab1/:country/:state/:city/:customer/:local/:weekday/:start/:end" component={videos} />
+              <Route path="/video-details/:videoid" component={VideoDetails} />
+              <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="tab1" href="/tab1">
+                <IonIcon icon={home} />
+                <IonLabel>Inicio</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab2" href="/tab2">
+                <IonIcon icon={trophy} />
+                <IonLabel>Em Alta</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab3" href="/tab3">
+                <IonIcon icon={star} />
+                <IonLabel>Inscrições</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab4" href="/tab4">
+                <IonIcon icon={contact} />
+                <IonLabel>Conta</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab4" href="/tab4">
+                <IonIcon icon={logoBuffer} />
+                <IonLabel>Histórico</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+    </AppContextProvider>
+  )
+};
 
 export default App;
