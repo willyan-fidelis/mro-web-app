@@ -1,35 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { IonBackButton, IonButtons, IonHeader, IonPage, IonToolbar, IonTitle, IonContent } from '@ionic/react';
 import { VideoPlayer } from '../../components/video-player/video-player'
 import { AppContext } from '../../App';
 import { VideoModel } from '../../application/api'
-export interface PropsVideoDetails {
-
-}
+import { api } from '../../application/resource.instance'
 
 
 const VideoDetails = (props: any) => {
-  //console.log("videos details props: ", props)
+  console.log("videos details props: ", props.match.params.videoid)
 
   let initVideo: VideoModel = {
-    OID: "fe19642f9afdf3ba80bfad9e069dc689",
-    city_name: "Joinville",
-    country_name: "Brasil",
-    customer_name: "Copacabana",
+    OID: "",
+    city_name: "0",
+    country_name: "0",
+    customer_name: "0",
     deslikes_rate: 0,
-    edited_filename: "mmm",
-    edited_fullname: "ccc",
+    edited_filename: "0",
+    edited_fullname: "0",
     likes_rate: 0,
     local_OID: 3,
-    local_name: "Qudra 2",
-    state_name: "Santa Catarina",
-    thumbnail_img_fullname: "https://testewillyan.s3-sa-east-1.amazonaws.com/jogada8.jpeg",
+    local_name: "",
+    state_name: "",
+    thumbnail_img_fullname: "",
     total_rate: 0,
     user_video_rate: null,
     view_count: 0,
-    when: "2019-11-29 18:06:08",
-    when_date: "29/11/2019",
-    when_time: "18:06",
+    when: "",
+    when_date: "",
+    when_time: "",
   }
 
   let [video, setVideo] = useState(initVideo);
@@ -37,9 +35,19 @@ const VideoDetails = (props: any) => {
   // @ts-ignore
   const { state, dispatch } = useContext(AppContext);
 
+  const fetchVideo = useCallback(async () => {
+    console.log('fetchVideos!')
+    //const ret = await fetch('https://dog.ceo/api/breeds/image/random/10');
+    // @ts-ignore
+    //const [vd, err] = await api.highest_rated_videos(0, 5)
+    const [vd, err] = await api.by_id_video(props.match.params.videoid)
+    //console.log(vd)
+    if (err) { setVideo(state.session.video_player_props) }
+    else { setVideo(vd.body) }
+  }, []);
+
   useEffect(() => {
-    setVideo(state.session.video_player_props)
-    console.log('video: ', video)
+    fetchVideo();
   }, [state.session.video_player_props]);
 
   return (

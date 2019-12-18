@@ -103,7 +103,7 @@ const App = () => {
               <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
-              <IonTabButton tab="tab1" href="/tab1">
+              {/* <IonTabButton tab="tab1" href="/tab1">
                 <IonIcon icon={home} />
                 <IonLabel>Inicio</IonLabel>
               </IonTabButton>
@@ -122,7 +122,7 @@ const App = () => {
               <IonTabButton tab="tab4" href="/tab4">
                 <IonIcon icon={logoBuffer} />
                 <IonLabel>Histórico</IonLabel>
-              </IonTabButton>
+              </IonTabButton> */}
             </IonTabBar>
           </IonTabs>
         </IonReactRouter>
