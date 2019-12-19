@@ -48,7 +48,7 @@ export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
     //const ret = await fetch('https://dog.ceo/api/breeds/image/random/10');
     // @ts-ignore
     //const [vd, err] = await api.highest_rated_videos(0, 5)
-    const [vd, err] = await api.latest_bylocalandweekday_videos(0, 5, props.url_parms.country, props.url_parms.state, props.url_parms.city, props.url_parms.customer, props.url_parms.local, props.url_parms.weekday, props.url_parms.start, props.url_parms.end)
+    const [vd, err] = await api.latest_bylocalandweekday_videos(0, 100, props.url_parms.country, props.url_parms.state, props.url_parms.city, props.url_parms.customer, props.url_parms.local, props.url_parms.weekday, props.url_parms.start, props.url_parms.end)
     //console.log(vd)
     if (err) { alert("Ops! Algo não ocorreu bem. Tente novamente!") }
     else { setVideos(vd.body) }
