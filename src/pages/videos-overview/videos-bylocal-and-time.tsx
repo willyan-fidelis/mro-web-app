@@ -1,4 +1,4 @@
-import { ButtonAppBar } from '../../components/menu/main-bar'
+import { ButtonAppBar } from '../../components/old/menu/main-bar'
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import '@ionic/core/css/core.css';
 import '@ionic/core/css/ionic.bundle.css';
@@ -17,26 +17,17 @@ import {
   IonLabel
 
 } from '@ionic/react';
-import { AppContext } from '../../App';
+import { AppContext,FavoritePathModel } from '../../App';
 import { pin } from 'ionicons/icons';
 import { Swipeable } from 'react-swipeable'
 import './videos-bylocal-and-time.css';
 import { api } from '../../application/resource.instance'
 export interface PropsVideosByLocalAndTime {
-  url_parms: {
-    country: string;
-    state: string;
-    city: string;
-    customer: string;
-    local: string;
-    weekday: string;
-    start: string;
-    end: string;
-  }
+  url_parms: FavoritePathModel
 }
 
 export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
-  //console.log('Propos Videos ByLocal:', props)
+  console.log('Propos Videos ByLocal:', props)
   // @ts-ignore
   const { state, dispatch } = useContext(AppContext);
   //console.log('all state: ', state)
@@ -44,7 +35,7 @@ export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
   let [videos, setVideos] = useState([]);
 
   const fetchVideos = useCallback(async () => {
-    console.log('fetchVideos!')
+    console.log('fetchVideos!',state)
     //const ret = await fetch('https://dog.ceo/api/breeds/image/random/10');
     // @ts-ignore
     //const [vd, err] = await api.highest_rated_videos(0, 5)
@@ -52,33 +43,29 @@ export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
     //console.log(vd)
     if (err) { alert("Ops! Algo não ocorreu bem. Tente novamente!") }
     else { setVideos(vd.body) }
-  }, []);
+  }, [state]);
 
   useEffect(() => {
     fetchVideos();
-    // dispatch({
-    //   type: 'setSession',
-    //   session: { hey: inputValue }
-    // })
   }, []);
+  useEffect(() => {
+    fetchVideos();
+  }, [state]);
 
   return (
+    props.url_parms.country ?
     <Swipeable onSwipedRight={() => alert("Direita")} onSwipedLeft={() => alert("Esquerda")}>
       <IonPage>
         <IonHeader onClick={() => { fetchVideos() }}>
-          <ButtonAppBar>
-          </ButtonAppBar>
+          {/* <ButtonAppBar>
+          </ButtonAppBar> */}
         </IonHeader>
         <IonContent>
-          {
-            //@ts-ignore
-            //(<ToastExample abc={() => { TesteXXX() }}></ToastExample>)
-          }
           <IonList>
             <IonGrid fixed>
               <IonRow align-items-stretch>
                 {videos.map((video: any, index: number, array: Array<any>) => (
-                  <IonCol align-self-stretch size="12" size-md="6" key={index}>
+                  <IonCol align-self-stretch size="auto" sizeXl="3" sizeLg="3"sizeMd="4" sizeSm="6" sizeXs="12" key={index}>
                     <IonCard onClick={() => {
                       dispatch({
                         type: 'setVideoPlayerProps',
@@ -106,6 +93,7 @@ export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
         </IonContent>
       </IonPage>
     </Swipeable>
+    : null
   );
 
 };

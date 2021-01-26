@@ -10,9 +10,9 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { home, trophy, contact, star, logoBuffer } from 'ionicons/icons';
-import videos from './pages/tabs/tab-home';
-import Tab2 from './pages/tabs/Tab2';
+import { home, trophy, contact, star, logoBuffer,search,film } from 'ionicons/icons';
+import videos from './pages/tabs/Tab1';
+import Tab2,{StateModel,CityModel,CustomerModel,LocalModel,WeekDaysEnum} from './pages/tabs/Tab2';
 import Tab3 from './pages/tabs/Tab3';
 import Tab4 from './pages/tabs/Tab4';
 import Details from './pages/tabs/Details';
@@ -36,23 +36,41 @@ import '@ionic/react/css/display.css';
 import { instance_initialize } from './application/resource.instance'
 /* Theme variables */
 import './theme/variables.css';
-import { useLocalStorage } from './components/localstorage/useLocalStorage';
+import { useLocalStorage } from './components/old/localstorage/useLocalStorage';
 require('dotenv').config()
 
-export const AppContext = createContext(null);
+export const AppContext = createContext<{state:AppStateReducer,dispatch:any}>(null);
 
-const initialState: { db: any, session: SessionModel | {} } = {
+export interface AppStateReducer{
+  db: { hello: string },
+  session: { video_player_props: any, favorite_path: FavoritePathModel, last_saved:LastSavedModel },
+}
+const initialState: AppStateReducer | {} = {
   db: { hello: 'word' },
-  session: { video_player_props: null },
+  session: { video_player_props: null, favorite_path: null, last_saved: null },
 }
 
-export interface SessionModel {
-  video_player_props: any
+export interface FavoritePathModel {
+    country: string;
+    state: string;
+    city: string;
+    customer: string;
+    local: string;
+    weekday: string;
+    start: string;
+    end: string;
 }
+export interface LastSavedModel{state_region:StateModel,city:CityModel,customer:CustomerModel,local:LocalModel,weekday:WeekDaysEnum,starttime:string,endtime:string}
 
-const reducer = (state: any, action: any) => {
+const reducer = (state: AppStateReducer, action: any): AppStateReducer => {
   if (action.type === 'setVideoPlayerProps') {
     return { ...state, session: { ...state.session, video_player_props: action.video_player_props } }
+  }
+  if (action.type === 'setFavoritePath') {
+    return { ...state, session: { ...state.session, favorite_path: action.favorite_path } }
+  }
+  if (action.type === 'setLastSaved') {
+    return { ...state, session: { ...state.session, last_saved: action.last_saved } }
   }
   return state;
 }
@@ -102,27 +120,19 @@ const App = () => {
               <Route path="/video-details/:videoid" component={VideoDetails} />
               <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
             </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              {/* <IonTabButton tab="tab1" href="/tab1">
-                <IonIcon icon={home} />
-                <IonLabel>Inicio</IonLabel>
+            <IonTabBar slot="top">
+
+              {/* Basta comentar esses IonTabButton para sumir com os tabs inferiores: */}
+              <IonTabButton tab="tab1" href="/tab1">
+                <IonIcon icon={film} />
+                <IonLabel>Replays</IonLabel>
               </IonTabButton>
               <IonTabButton tab="tab2" href="/tab2">
-                <IonIcon icon={trophy} />
-                <IonLabel>Em Alta</IonLabel>
+                <IonIcon icon={search} />
+                <IonLabel>Procurar</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="tab3" href="/tab3">
-                <IonIcon icon={star} />
-                <IonLabel>Inscrições</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab4" href="/tab4">
-                <IonIcon icon={contact} />
-                <IonLabel>Conta</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab4" href="/tab4">
-                <IonIcon icon={logoBuffer} />
-                <IonLabel>Histórico</IonLabel>
-              </IonTabButton> */}
+
+
             </IonTabBar>
           </IonTabs>
         </IonReactRouter>

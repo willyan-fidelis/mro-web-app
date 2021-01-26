@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { IonBackButton, IonButtons, IonHeader, IonPage, IonToolbar, IonTitle, IonContent } from '@ionic/react';
-import { VideoPlayer } from '../../components/video-player/video-player'
+import { VideoPlayer } from '../../components/old/video-player/video-player'
 import { AppContext } from '../../App';
 import { VideoModel } from '../../application/api'
 import { api } from '../../application/resource.instance'

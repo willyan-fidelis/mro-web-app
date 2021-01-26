@@ -6,7 +6,7 @@ import { IonCardContent, IonCard } from '@ionic/react';
 //import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
 import './video-player.css';
-import { VideoModel } from '../../application/api'
+import { VideoModel } from '../../../application/api'
 
 export interface PropsVideoPlayer {
     data: VideoModel
