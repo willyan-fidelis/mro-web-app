@@ -6,15 +6,7 @@ const Tab3Page: React.FC = () => {
 
   //console.log(controls, state, ref)
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tab Three</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-      </IonContent>
-    </IonPage>
+    <iframe width="100%" height="100%" src="https://www.site.meureplay.link/account/my-account"></iframe>
   );
 };
 

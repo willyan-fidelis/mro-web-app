@@ -120,20 +120,18 @@ const App = () => {
               <Route path="/video-details/:videoid" component={VideoDetails} />
               <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
             </IonRouterOutlet>
-            <IonTabBar slot="top">
 
-              {/* Basta comentar esses IonTabButton para sumir com os tabs inferiores: */}
-              <IonTabButton tab="tab1" href="/tab1">
+            <IonTabBar slot="bottom">
+              {/* <IonTabButton tab="tab1" href="/tab1">
                 <IonIcon icon={film} />
                 <IonLabel>Replays</IonLabel>
               </IonTabButton>
               <IonTabButton tab="tab2" href="/tab2">
                 <IonIcon icon={search} />
                 <IonLabel>Procurar</IonLabel>
-              </IonTabButton>
-
-
+              </IonTabButton> */}
             </IonTabBar>
+            
           </IonTabs>
         </IonReactRouter>
       </IonApp>
