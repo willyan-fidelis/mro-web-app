@@ -53,10 +53,11 @@ export class Api {
         weekday: string,
         start: string,
         end: string,
+        GetOnlyVideo?: boolean
     ): Promise<Array<any>> {
         return new Promise(async (resolve: any, reject: any) => {
             axios.post(this.base_url +
-                `/videos/last/${country}/${state}/${city}/${customer}/${local}/${weekday}/${start}/${end}/`,
+                `/${GetOnlyVideo?'videos':'status'}/last/${country}/${state}/${city}/${customer}/${local}/${weekday}/${start}/${end}/`,
                 {
                     email: this.user.email,
                     session: this.user.session,

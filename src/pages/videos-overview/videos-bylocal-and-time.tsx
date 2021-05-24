@@ -54,7 +54,7 @@ export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
 
   return (
     props.url_parms.country ?
-    <Swipeable onSwipedRight={() => alert("Direita")} onSwipedLeft={() => alert("Esquerda")}>
+    <Swipeable onSwipedRight={() => {/*alert("Direita")*/;}} onSwipedLeft={() => {/*alert("Esquerda")*/;}}>
       <IonPage>
         <IonHeader onClick={() => { fetchVideos() }}>
           {/* <ButtonAppBar>
@@ -71,7 +71,7 @@ export const VideosByLocalAndTime = (props: PropsVideosByLocalAndTime) => {
                         type: 'setVideoPlayerProps',
                         video_player_props: video
                       })
-                    }} routerLink={`/video-details/${video.OID}`} className="my-card" key={index}>
+                    }} routerLink={video.isVideo == 1 && video.VideoStatus == 1 ? `/video-details/${video.OID}`: undefined} className="my-card" key={index}>
                       <img /* height='300' */ src={video.thumbnail_img_fullname} />
                       <IonItem>
 

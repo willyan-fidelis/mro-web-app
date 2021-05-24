@@ -1,0 +1,2 @@
+## Historico de problemas/resolução:
+Para instalar as dependencias foi utilizado npm install. Com yarn tive problemas com @babel, possivelmente com a versão do typescript, possivelmente sua resolução pode ser encontrada aqui: https://github.com/babel/babel/issues/12519 porem não tive tempo par validar isso.
